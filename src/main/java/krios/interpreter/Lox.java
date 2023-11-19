@@ -10,6 +10,9 @@ import java.util.List;
 import static java.nio.charset.Charset.defaultCharset;
 
 public class Lox {
+
+    private static boolean hasError;
+
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
             System.out.println("Usage: jlox [script]");
@@ -23,12 +26,21 @@ public class Lox {
         }
     }
 
+    public static void error(int line, String message) {
+        System.err.printf("[line: %s] Error: %s", line, message);
+        hasError = true;
+    }
+
     private static void runFile(String path) throws IOException {
         byte[] fileContent = Files.readAllBytes(Paths.get(path));
 
         String sourceCode = new String(fileContent, defaultCharset());
 
         run(sourceCode);
+
+        if (hasError) {
+            System.exit(65);
+        }
     }
 
     private static void runPrompt() throws IOException {
@@ -44,6 +56,8 @@ public class Lox {
             }
 
             run(line);
+
+            hasError = false;
         }
     }
 
