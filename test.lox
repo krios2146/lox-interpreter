@@ -1,0 +1,10 @@
+print "Hello World";
+
+var x = 10;
+
+if (x < 10) {
+    print "x is lower than 10";
+}
+else {
+    print "x is bigger or equal to 10";
+}
