@@ -1,0 +1,24 @@
+package krios.interpreter;
+
+public enum TokenType {
+    LEFT_PARENTHESIS, RIGHT_PARENTHESIS,
+    LEFT_BRACE, RIGHT_BRACE,
+    COMMA, DOT, SEMICOLON,
+    MINUS, PLUS, SLASH, STAR,
+
+    BANG, BANG_EQUAL,
+    EQUAL, EQUAL_EQUAL,
+    GREATER, GREATER_EQUAL,
+    LESS, LESS_EQUAL,
+
+    IDENTIFIER, STRING, NUMBER,
+
+    CLASS, FUN, RETURN, VAR, NIL, PRINT,
+    AND, OR,
+    IF, ELSE,
+    TRUE, FALSE,
+    FOR, WHILE,
+    THIS, SUPER,
+
+    EOF
+}
