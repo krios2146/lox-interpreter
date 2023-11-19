@@ -1,10 +1,26 @@
 print "Hello World";
 
-var x = 10;
+class EmergenceSearcher {
 
-if (x < 10) {
-    print "x is lower than 10";
+    fun search (x) {
+        if (x == nil or x > 177013) {
+            print "Cannot search!";
+            return;
+        }
+
+        var isFound = false;
+
+        while (!isFound) {
+            if (x == 177013) {
+                isFound = true;
+                return x;
+            }
+
+            x = x + 1.2;
+        }
+    }
 }
-else {
-    print "x is bigger or equal to 10";
-}
+
+var x = 10;
+var emergenceSearcher = EmergenceSearcher();
+var emergence = emergenceSearcher.search(x);
