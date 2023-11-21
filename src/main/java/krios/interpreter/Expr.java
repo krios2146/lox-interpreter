@@ -29,6 +29,18 @@ abstract class Expr {
         <T> T accept(Visitor<T> visitor) {
             return visitor.visitBinaryExpr(this);
         }
+
+        public Expr getLeft() {
+            return left;
+        }
+
+        public Token getOperator() {
+            return operator;
+        }
+
+        public Expr getRight() {
+            return right;
+        }
     }
 
     static class Grouping extends Expr {
@@ -43,6 +55,10 @@ abstract class Expr {
         <T> T accept(Visitor<T> visitor) {
             return visitor.visitGroupingExpr(this);
         }
+
+        public Expr getExpression() {
+            return expression;
+        }
     }
 
     static class Literal extends Expr {
@@ -56,6 +72,10 @@ abstract class Expr {
         @Override
         <T> T accept(Visitor<T> visitor) {
             return visitor.visitLiteralExpr(this);
+        }
+
+        public Object getValue() {
+            return value;
         }
     }
 
@@ -72,6 +92,14 @@ abstract class Expr {
         @Override
         <T> T accept(Visitor<T> visitor) {
             return visitor.visitUnaryExpr(this);
+        }
+
+        public Token getOperator() {
+            return operator;
+        }
+
+        public Expr getRight() {
+            return right;
         }
     }
 }
