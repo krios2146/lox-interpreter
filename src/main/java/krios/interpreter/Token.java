@@ -18,4 +18,20 @@ public class Token {
     public String toString() {
         return "Token - type " + type + " lexeme " + lexeme + " literal " + literal;
     }
+
+    public TokenType getType() {
+        return type;
+    }
+
+    public String getLexeme() {
+        return lexeme;
+    }
+
+    public Object getLiteral() {
+        return literal;
+    }
+
+    public int getLine() {
+        return line;
+    }
 }
