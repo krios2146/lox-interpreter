@@ -31,6 +31,14 @@ public class Lox {
         hasError = true;
     }
 
+    static void error(Token token, String message) {
+        if (token.getType() == TokenType.EOF) {
+            error(token.getLine(), " at end" + message);
+        } else {
+            error(token.getLine(), " at '" + token.getLexeme() + "' " + message);
+        }
+    }
+
     private static void runFile(String path) throws IOException {
         byte[] fileContent = Files.readAllBytes(Paths.get(path));
 
@@ -65,8 +73,13 @@ public class Lox {
         Scanner scanner = new Scanner(sourceCode);
         List<Token> tokens = scanner.scanTokens();
 
-        for (Token token : tokens) {
-            System.out.println(token);
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
+
+        if (hasError) {
+            return;
         }
+
+        System.out.println(new AstPrinter().print(expression));
     }
 }
