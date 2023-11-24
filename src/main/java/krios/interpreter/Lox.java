@@ -11,6 +11,8 @@ import static java.nio.charset.Charset.defaultCharset;
 
 public class Lox {
 
+    private static final Interpreter interpreter = new Interpreter();
+
     private static boolean hasError;
     private static boolean hasRuntimeError;
 
@@ -89,6 +91,6 @@ public class Lox {
             return;
         }
 
-        System.out.println(new AstPrinter().print(expression));
+        interpreter.interpret(expression);
     }
 }
