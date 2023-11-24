@@ -9,15 +9,19 @@ public class Interpreter implements Expr.Visitor<Object> {
 
         switch (expr.getOperator().getType()) {
             case GREATER -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left > (double) right;
             }
             case GREATER_EQUAL -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left >= (double) right;
             }
             case LESS -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left < (double) right;
             }
             case LESS_EQUAL -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left <= (double) right;
             }
             case BANG_EQUAL -> {
@@ -27,12 +31,15 @@ public class Interpreter implements Expr.Visitor<Object> {
                 return isEqual(left, right);
             }
             case MINUS -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left - (double) right;
             }
             case SLASH -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left / (double) right;
             }
             case STAR -> {
+                checkNumberOperands(expr.getOperator(), left, right);
                 return (double) left * (double) right;
             }
             case PLUS -> {
@@ -42,6 +49,7 @@ public class Interpreter implements Expr.Visitor<Object> {
                 if (left instanceof String && right instanceof String) {
                     return (double) left + (double) right;
                 }
+                throw new RuntimeError(expr.getOperator(), "Operands must be numbers or strings");
             }
         }
 
@@ -64,6 +72,7 @@ public class Interpreter implements Expr.Visitor<Object> {
 
         switch (expr.getOperator().getType()) {
             case MINUS -> {
+                checkNumberOperand(expr.getOperator(), right);
                 return -(double) right;
             }
             case BANG -> {
@@ -72,6 +81,20 @@ public class Interpreter implements Expr.Visitor<Object> {
         }
 
         return null;
+    }
+
+    private void checkNumberOperands(Token operator, Object left, Object right) {
+        if (left instanceof Double && right instanceof Double) {
+            return;
+        }
+        throw new RuntimeError(operator, "Operands must be numbers");
+    }
+
+    private void checkNumberOperand(Token operator, Object operand) {
+        if (operand instanceof Double) {
+            return;
+        }
+        throw new RuntimeError(operator, "Operand must be a number");
     }
 
     private boolean isEqual(Object a, Object b) {
