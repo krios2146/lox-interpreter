@@ -12,6 +12,7 @@ import static java.nio.charset.Charset.defaultCharset;
 public class Lox {
 
     private static boolean hasError;
+    private static boolean hasRuntimeError;
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
@@ -26,14 +27,19 @@ public class Lox {
         }
     }
 
+    public static void runtimeError(RuntimeError error) {
+        System.err.printf("%s \n[line: %d]\n", error.getMessage(), error.getToken().getLine());
+        hasRuntimeError = true;
+    }
+
     public static void error(int line, String message) {
-        System.err.printf("[line: %s] Error: %s", line, message);
+        System.err.printf("[line: %s] Error: %s \n", line, message);
         hasError = true;
     }
 
     static void error(Token token, String message) {
         if (token.getType() == TokenType.EOF) {
-            error(token.getLine(), " at end" + message);
+            error(token.getLine(), " at end " + message);
         } else {
             error(token.getLine(), " at '" + token.getLexeme() + "' " + message);
         }
@@ -48,6 +54,9 @@ public class Lox {
 
         if (hasError) {
             System.exit(65);
+        }
+        if (hasRuntimeError) {
+            System.exit(70);
         }
     }
 
