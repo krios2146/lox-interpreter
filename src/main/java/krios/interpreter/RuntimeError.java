@@ -7,4 +7,8 @@ public class RuntimeError extends RuntimeException {
         super(message);
         this.token = token;
     }
+
+    public Token getToken() {
+        return token;
+    }
 }
