@@ -51,7 +51,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     return (double) left + (double) right;
                 }
                 if (left instanceof String && right instanceof String) {
-                    return (double) left + (double) right;
+                    return (String) left + (String) right;
                 }
                 throw new RuntimeError(expr.getOperator(), "Operands must be numbers or strings");
             }
