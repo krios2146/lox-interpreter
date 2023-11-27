@@ -7,6 +7,8 @@ abstract class Stmt {
         T visitExpressionStmt(Expression stmt);
 
         T visitPrintStmt(Print stmt);
+
+        T visitVarStmt(Var stmt);
     }
 
     static class Expression extends Stmt {
@@ -42,6 +44,30 @@ abstract class Stmt {
 
         public Expr getExpression() {
             return expression;
+        }
+    }
+
+    static class Var extends Stmt {
+
+        private final Token name;
+        private final Expr initializer;
+
+        Var(Token name, Expr initializer) {
+            this.name = name;
+            this.initializer = initializer;
+        }
+
+        @Override
+        <T> T accept(Visitor<T> visitor) {
+            return visitor.visitVarStmt(this);
+        }
+
+        public Token getName() {
+            return name;
+        }
+
+        public Expr getInitializer() {
+            return initializer;
         }
     }
 }
