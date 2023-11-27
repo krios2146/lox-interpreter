@@ -11,6 +11,8 @@ abstract class Expr {
         T visitLiteralExpr(Literal expr);
 
         T visitUnaryExpr(Unary expr);
+
+        T visitVariableExpr(Variable expr);
     }
 
     static class Binary extends Expr {
@@ -100,6 +102,24 @@ abstract class Expr {
 
         public Expr getRight() {
             return right;
+        }
+    }
+
+    static class Variable extends Expr {
+
+        private final Token name;
+
+        Variable(Token name) {
+            this.name = name;
+        }
+
+        @Override
+        <T> T accept(Visitor<T> visitor) {
+            return visitor.visitVariableExpr(this);
+        }
+
+        public Token getName() {
+            return name;
         }
     }
 }
