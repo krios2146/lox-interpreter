@@ -1,5 +1,7 @@
 package krios.interpreter;
 
+import java.util.List;
+
 abstract class Stmt {
     abstract <T> T accept(Visitor<T> visitor);
 
@@ -9,6 +11,25 @@ abstract class Stmt {
         T visitPrintStmt(Print stmt);
 
         T visitVarStmt(Var stmt);
+
+        T visitBlockStmt(Block block);
+    }
+
+    static class Block extends Stmt {
+        private final List<Stmt> statements;
+
+        Block(List<Stmt> statements) {
+            this.statements = statements;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitBlockStmt(this);
+        }
+
+        public List<Stmt> getStatements() {
+            return statements;
+        }
     }
 
     static class Expression extends Stmt {
