@@ -13,6 +13,32 @@ abstract class Expr {
         T visitUnaryExpr(Unary expr);
 
         T visitVariableExpr(Variable expr);
+
+        T visitAssignExpr(Assign assign);
+    }
+
+    static class Assign extends Expr {
+
+        private final Token name;
+        private final Expr value;
+
+        Assign(Token name, Expr value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitAssignExpr(this);
+        }
+
+        public Token getName() {
+            return name;
+        }
+
+        public Expr getValue() {
+            return value;
+        }
     }
 
     static class Binary extends Expr {
