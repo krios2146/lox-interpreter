@@ -124,6 +124,16 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitIfStmt(Stmt.If stmt) {
+        if (isTruthy(evaluate(stmt.getCondition()))) {
+            execute(stmt.getThenBranch());
+        } else if (stmt.getElseBranch() != null) {
+            execute(stmt.getElseBranch());
+        }
+        return null;
+    }
+
+    @Override
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr);
         environment.assign(expr.getName(), value);
