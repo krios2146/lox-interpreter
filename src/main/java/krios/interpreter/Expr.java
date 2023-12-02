@@ -15,6 +15,38 @@ abstract class Expr {
         T visitVariableExpr(Variable expr);
 
         T visitAssignExpr(Assign assign);
+
+        T visitLogicalExpr(Logical logical);
+    }
+
+    static class Logical extends Expr {
+
+        private final Expr left;
+        private final Token operator;
+        private final Expr right;
+
+        Logical(Expr left, Token operator, Expr right) {
+            this.left = left;
+            this.operator = operator;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitLogicalExpr(this);
+        }
+
+        public Expr getLeft() {
+            return left;
+        }
+
+        public Token getOperator() {
+            return operator;
+        }
+
+        public Expr getRight() {
+            return right;
+        }
     }
 
     static class Assign extends Expr {
