@@ -13,6 +13,37 @@ abstract class Stmt {
         T visitVarStmt(Var stmt);
 
         T visitBlockStmt(Block block);
+
+        T visitIfStmt(If anIf);
+    }
+
+    static class If extends Stmt {
+        private final Expr condition;
+        private final Stmt thenBranch;
+        private final Stmt elseBranch;
+
+        If(Expr condition, Stmt thenBranch, Stmt elseBranch) {
+            this.condition = condition;
+            this.thenBranch = thenBranch;
+            this.elseBranch = elseBranch;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitIfStmt(this);
+        }
+
+        public Expr getCondition() {
+            return condition;
+        }
+
+        public Stmt getThenBranch() {
+            return thenBranch;
+        }
+
+        public Stmt getElseBranch() {
+            return elseBranch;
+        }
     }
 
     static class Block extends Stmt {
