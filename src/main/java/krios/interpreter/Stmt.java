@@ -18,6 +18,7 @@ abstract class Stmt {
     }
 
     static class If extends Stmt {
+
         private final Expr condition;
         private final Stmt thenBranch;
         private final Stmt elseBranch;
@@ -47,6 +48,7 @@ abstract class Stmt {
     }
 
     static class Block extends Stmt {
+
         private final List<Stmt> statements;
 
         Block(List<Stmt> statements) {
