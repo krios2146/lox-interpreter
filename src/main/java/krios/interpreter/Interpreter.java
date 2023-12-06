@@ -93,6 +93,30 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Object visitAssignExpr(Expr.Assign expr) {
+        Object value = evaluate(expr);
+        environment.assign(expr.getName(), value);
+        return value;
+    }
+
+    @Override
+    public Object visitLogicalExpr(Expr.Logical expr) {
+        Object left = evaluate(expr.getLeft());
+
+        if (expr.getOperator().getType() == TokenType.OR) {
+            if (isTruthy(left)) {
+                return left;
+            }
+        } else {
+            if (!isTruthy(left)) {
+                return left;
+            }
+        }
+
+        return evaluate(expr.getRight());
+    }
+
+    @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         evaluate(stmt.getExpression());
         return null;
@@ -118,8 +142,8 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitBlockStmt(Stmt.Block block) {
-        executeBlock(block.getStatements(), new Environment(environment));
+    public Void visitBlockStmt(Stmt.Block stmt) {
+        executeBlock(stmt.getStatements(), new Environment(environment));
         return null;
     }
 
@@ -131,30 +155,6 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             execute(stmt.getElseBranch());
         }
         return null;
-    }
-
-    @Override
-    public Object visitAssignExpr(Expr.Assign expr) {
-        Object value = evaluate(expr);
-        environment.assign(expr.getName(), value);
-        return value;
-    }
-
-    @Override
-    public Object visitLogicalExpr(Expr.Logical expr) {
-        Object left = evaluate(expr.getLeft());
-
-        if (expr.getOperator().getType() == TokenType.OR) {
-            if (isTruthy(left)) {
-                return left;
-            }
-        } else {
-            if (!isTruthy(left)) {
-                return left;
-            }
-        }
-
-        return evaluate(expr.getRight());
     }
 
     private void executeBlock(List<Stmt> statements, Environment environment) {
