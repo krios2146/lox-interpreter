@@ -12,9 +12,96 @@ abstract class Stmt {
 
         T visitVarStmt(Var stmt);
 
-        T visitBlockStmt(Block block);
+        T visitBlockStmt(Block stmt);
 
-        T visitIfStmt(If anIf);
+        T visitIfStmt(If stmt);
+
+        T visitWhileStmt(While stmt);
+    }
+
+    static class Expression extends Stmt {
+
+        private final Expr expression;
+
+        Expression(Expr expression) {
+            this.expression = expression;
+        }
+
+        @Override
+        <T> T accept(Visitor<T> visitor) {
+            return visitor.visitExpressionStmt(this);
+        }
+
+        public Expr getExpression() {
+            return expression;
+        }
+
+
+    }
+
+    static class Print extends Stmt {
+
+        private final Expr expression;
+
+        Print(Expr expression) {
+            this.expression = expression;
+        }
+
+        @Override
+        <T> T accept(Visitor<T> visitor) {
+            return visitor.visitPrintStmt(this);
+        }
+
+        public Expr getExpression() {
+            return expression;
+        }
+
+
+    }
+
+    static class Var extends Stmt {
+
+        private final Token name;
+        private final Expr initializer;
+
+        Var(Token name, Expr initializer) {
+            this.name = name;
+            this.initializer = initializer;
+        }
+
+        @Override
+        <T> T accept(Visitor<T> visitor) {
+            return visitor.visitVarStmt(this);
+        }
+
+        public Token getName() {
+            return name;
+        }
+
+        public Expr getInitializer() {
+            return initializer;
+        }
+
+
+    }
+
+    static class Block extends Stmt {
+        private final List<Stmt> statements;
+
+        Block(List<Stmt> statements) {
+            this.statements = statements;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitBlockStmt(this);
+        }
+
+        public List<Stmt> getStatements() {
+            return statements;
+        }
+
+
     }
 
     static class If extends Stmt {
@@ -45,83 +132,30 @@ abstract class Stmt {
         public Stmt getElseBranch() {
             return elseBranch;
         }
+
     }
 
-    static class Block extends Stmt {
+    static class While extends Stmt {
+        private final Expr condition;
+        private final Stmt body;
 
-        private final List<Stmt> statements;
-
-        Block(List<Stmt> statements) {
-            this.statements = statements;
+        While(Expr condition, Stmt body) {
+            this.condition = condition;
+            this.body = body;
         }
 
         @Override
         <R> R accept(Visitor<R> visitor) {
-            return visitor.visitBlockStmt(this);
+            return visitor.visitWhileStmt(this);
         }
 
-        public List<Stmt> getStatements() {
-            return statements;
-        }
-    }
-
-    static class Expression extends Stmt {
-
-        private final Expr expression;
-
-        Expression(Expr expression) {
-            this.expression = expression;
+        public Expr getCondition() {
+            return condition;
         }
 
-        @Override
-        <T> T accept(Visitor<T> visitor) {
-            return visitor.visitExpressionStmt(this);
+        public Stmt getBody() {
+            return body;
         }
 
-        public Expr getExpression() {
-            return expression;
-        }
-    }
-
-    static class Print extends Stmt {
-
-        private final Expr expression;
-
-        Print(Expr expression) {
-            this.expression = expression;
-        }
-
-        @Override
-        <T> T accept(Visitor<T> visitor) {
-            return visitor.visitPrintStmt(this);
-        }
-
-        public Expr getExpression() {
-            return expression;
-        }
-    }
-
-    static class Var extends Stmt {
-
-        private final Token name;
-        private final Expr initializer;
-
-        Var(Token name, Expr initializer) {
-            this.name = name;
-            this.initializer = initializer;
-        }
-
-        @Override
-        <T> T accept(Visitor<T> visitor) {
-            return visitor.visitVarStmt(this);
-        }
-
-        public Token getName() {
-            return name;
-        }
-
-        public Expr getInitializer() {
-            return initializer;
-        }
     }
 }
