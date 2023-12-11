@@ -1,10 +1,14 @@
 package krios.interpreter;
 
+import java.util.List;
+
 abstract class Expr {
     abstract <T> T accept(Visitor<T> visitor);
 
     interface Visitor<T> {
         T visitBinaryExpr(Binary expr);
+
+        T visitCallExpr(Call expr);
 
         T visitGroupingExpr(Grouping expr);
 
@@ -14,9 +18,9 @@ abstract class Expr {
 
         T visitVariableExpr(Variable expr);
 
-        T visitAssignExpr(Assign assign);
+        T visitAssignExpr(Assign expr);
 
-        T visitLogicalExpr(Logical logical);
+        T visitLogicalExpr(Logical expr);
     }
 
     static class Binary extends Expr {
@@ -64,6 +68,36 @@ abstract class Expr {
 
         public Expr getExpression() {
             return expression;
+        }
+    }
+
+    static class Call extends Expr {
+
+        final Expr callee;
+        final Token paren;
+        final List<Expr> arguments;
+
+        Call(Expr callee, Token paren, List<Expr> arguments) {
+            this.callee = callee;
+            this.paren = paren;
+            this.arguments = arguments;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitCallExpr(this);
+        }
+
+        public Expr getCallee() {
+            return callee;
+        }
+
+        public Token getParen() {
+            return paren;
+        }
+
+        public List<Expr> getArguments() {
+            return arguments;
         }
     }
 
