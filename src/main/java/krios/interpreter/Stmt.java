@@ -36,7 +36,6 @@ abstract class Stmt {
             return expression;
         }
 
-
     }
 
     static class Print extends Stmt {
@@ -55,7 +54,6 @@ abstract class Stmt {
         public Expr getExpression() {
             return expression;
         }
-
 
     }
 
@@ -82,10 +80,10 @@ abstract class Stmt {
             return initializer;
         }
 
-
     }
 
     static class Block extends Stmt {
+
         private final List<Stmt> statements;
 
         Block(List<Stmt> statements) {
@@ -100,7 +98,6 @@ abstract class Stmt {
         public List<Stmt> getStatements() {
             return statements;
         }
-
 
     }
 
@@ -136,6 +133,7 @@ abstract class Stmt {
     }
 
     static class While extends Stmt {
+
         private final Expr condition;
         private final Stmt body;
 
