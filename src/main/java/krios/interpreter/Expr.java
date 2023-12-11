@@ -19,60 +19,6 @@ abstract class Expr {
         T visitLogicalExpr(Logical logical);
     }
 
-    static class Logical extends Expr {
-
-        private final Expr left;
-        private final Token operator;
-        private final Expr right;
-
-        Logical(Expr left, Token operator, Expr right) {
-            this.left = left;
-            this.operator = operator;
-            this.right = right;
-        }
-
-        @Override
-        <R> R accept(Visitor<R> visitor) {
-            return visitor.visitLogicalExpr(this);
-        }
-
-        public Expr getLeft() {
-            return left;
-        }
-
-        public Token getOperator() {
-            return operator;
-        }
-
-        public Expr getRight() {
-            return right;
-        }
-    }
-
-    static class Assign extends Expr {
-
-        private final Token name;
-        private final Expr value;
-
-        Assign(Token name, Expr value) {
-            this.name = name;
-            this.value = value;
-        }
-
-        @Override
-        <R> R accept(Visitor<R> visitor) {
-            return visitor.visitAssignExpr(this);
-        }
-
-        public Token getName() {
-            return name;
-        }
-
-        public Expr getValue() {
-            return value;
-        }
-    }
-
     static class Binary extends Expr {
 
         private final Expr left;
@@ -178,6 +124,60 @@ abstract class Expr {
 
         public Token getName() {
             return name;
+        }
+    }
+
+    static class Assign extends Expr {
+
+        private final Token name;
+        private final Expr value;
+
+        Assign(Token name, Expr value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitAssignExpr(this);
+        }
+
+        public Token getName() {
+            return name;
+        }
+
+        public Expr getValue() {
+            return value;
+        }
+    }
+
+    static class Logical extends Expr {
+
+        private final Expr left;
+        private final Token operator;
+        private final Expr right;
+
+        Logical(Expr left, Token operator, Expr right) {
+            this.left = left;
+            this.operator = operator;
+            this.right = right;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitLogicalExpr(this);
+        }
+
+        public Expr getLeft() {
+            return left;
+        }
+
+        public Token getOperator() {
+            return operator;
+        }
+
+        public Expr getRight() {
+            return right;
         }
     }
 }
