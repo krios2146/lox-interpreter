@@ -1,0 +1,5 @@
+fun say_hi(first, last) {
+  print "Hi, " + first + " " + last + "!";
+}
+
+say_hi("krios", "2146");
