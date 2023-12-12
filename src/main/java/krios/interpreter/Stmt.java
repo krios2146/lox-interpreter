@@ -17,6 +17,8 @@ abstract class Stmt {
         T visitIfStmt(If stmt);
 
         T visitWhileStmt(While stmt);
+
+        T visitFunctionStmt(Function function);
     }
 
     static class Expression extends Stmt {
@@ -155,5 +157,35 @@ abstract class Stmt {
             return body;
         }
 
+    }
+
+    static class Function extends Stmt {
+
+        private final Token name;
+        private final List<Token> params;
+        private final List<Stmt> body;
+
+        Function(Token name, List<Token> params, List<Stmt> body) {
+            this.name = name;
+            this.params = params;
+            this.body = body;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitFunctionStmt(this);
+        }
+
+        public Token getName() {
+            return name;
+        }
+
+        public List<Token> getParams() {
+            return params;
+        }
+
+        public List<Stmt> getBody() {
+            return body;
+        }
     }
 }
