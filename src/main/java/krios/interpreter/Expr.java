@@ -73,9 +73,9 @@ abstract class Expr {
 
     static class Call extends Expr {
 
-        final Expr callee;
-        final Token paren;
-        final List<Expr> arguments;
+        private final Expr callee;
+        private final Token paren;
+        private final List<Expr> arguments;
 
         Call(Expr callee, Token paren, List<Expr> arguments) {
             this.callee = callee;
