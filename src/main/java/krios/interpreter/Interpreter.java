@@ -175,6 +175,17 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitReturnStmt(Stmt.Return stmt) {
+        Object value = null;
+
+        if (stmt.getValue() != null) {
+            value = evaluate(stmt.getValue());
+        }
+
+        throw new Return(value);
+    }
+
+    @Override
     public Void visitVarStmt(Stmt.Var stmt) {
         Object value = null;
 
@@ -216,7 +227,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         LoxFunction function = new LoxFunction(stmt);
 
         environment.define(stmt.getName().getLexeme(), function);
-        
+
         return null;
     }
 
