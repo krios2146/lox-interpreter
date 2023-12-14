@@ -10,6 +10,8 @@ abstract class Stmt {
 
         T visitPrintStmt(Print stmt);
 
+        T visitReturnStmt(Return aReturn);
+
         T visitVarStmt(Var stmt);
 
         T visitBlockStmt(Block stmt);
@@ -57,6 +59,30 @@ abstract class Stmt {
             return expression;
         }
 
+    }
+
+    static class Return extends Stmt {
+
+        private final Token keyword;
+        private final Expr value;
+
+        Return(Token keyword, Expr value) {
+            this.keyword = keyword;
+            this.value = value;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitReturnStmt(this);
+        }
+
+        public Token getKeyword() {
+            return keyword;
+        }
+
+        public Expr getValue() {
+            return value;
+        }
     }
 
     static class Var extends Stmt {
